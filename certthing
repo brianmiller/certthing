@@ -2,13 +2,15 @@
 
 
 wildDomains="briansmiller.com"
-destinationDir="/mnt/certs"
-
+certDir="/mnt/certs"
 
 
 date
-if [ ! -f $destinationDir/ready.nodelete ]; then
-	echo "[ ERROR: ] The destinationDir must contain the file 'ready.nodelete' at its root, as an indicator the filesytem is mounted and ready to use."
+echo
+if [ ! -f $certDir/ready.nodelete ]; then
+	echo "[ ERROR: ] The certDir must contain the file 'ready.nodelete' at its root, as an indicator the filesytem is mounted and ready to use."
+	echo
+	exit 1
 fi
 
 
@@ -16,4 +18,13 @@ for wildDomain in $wildDomains; do
 	echo
 	echo "Processing wildcard cert for $wildDomain..."
 	echo
+
+	/usr/bin/certbot certonly --dry-run --test-cert \
+	--max-log-backups 5 \
+	--manual --manual-auth-hook "./dnsauth" --preferred-challenge dns-01 \
+	--config-dir $certDir --work-dir $certDir --logs-dir $certDir \
+	--non-interactive --agree-tos -m brian@phospher.com \
+	-d "*.$wildDomain"
+	echo
+
 done
