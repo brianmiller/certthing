@@ -23,7 +23,7 @@ for wildDomain in $wildDomains; do
 	--max-log-backups 5 \
 	--manual --manual-auth-hook "./dnsauth" --preferred-challenge dns-01 \
 	--config-dir $certDir --work-dir $certDir --logs-dir $certDir \
-	--non-interactive --agree-tos -m brian@phospher.com \
+	--non-interactive --manual-public-ip-logging-ok --agree-tos -m brian@phospher.com \
 	-d "*.$wildDomain"
 	echo
 
