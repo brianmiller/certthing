@@ -1,3 +1,10 @@
 #!/bin/bash
 
 
+
+destinationDir="/mnt/certs"
+
+if [ ! -f $destinationDir/ready.nodelete ]; then
+	echo "[ ERROR: ] The destinationDir must contain the file 'ready.nodelete' at its root, as an indicator the filesytem is mounted and ready to use."
+fi
+	
