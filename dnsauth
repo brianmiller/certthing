@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/mnt/scripts/ddnsupdater txt _acme-challenge.${CERTBOT_DOMAIN}. ${CERTBOT_VALIDATION} 2.2.20.67
+/opt/stateful/scripts/ddnsupdater txt _acme-challenge.${CERTBOT_DOMAIN}. ${CERTBOT_VALIDATION} 2.2.20.67
