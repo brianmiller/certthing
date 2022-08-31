@@ -21,7 +21,7 @@ for wildDomain in $wildDomains; do
 
 	/usr/bin/certbot certonly --dry-run --test-cert \
 	--max-log-backups 5 \
-	--manual --manual-auth-hook "./dnsauth" --preferred-challenge dns-01 \
+	--manual --manual-auth-hook "/opt/stateful/scripts/dnsauth" --preferred-challenge dns-01 \
 	--config-dir $certDir --work-dir $certDir --logs-dir $certDir \
 	--non-interactive --manual-public-ip-logging-ok --agree-tos -m brian@phospher.com \
 	-d "*.$wildDomain"
