@@ -1,10 +1,19 @@
 #!/bin/bash
 
 
-
+wildDomains="briansmiller.com"
 destinationDir="/mnt/certs"
 
+
+
+date
 if [ ! -f $destinationDir/ready.nodelete ]; then
 	echo "[ ERROR: ] The destinationDir must contain the file 'ready.nodelete' at its root, as an indicator the filesytem is mounted and ready to use."
 fi
-	
+
+
+for wildDomain in $wildDomains; do
+	echo
+	echo "Processing wildcard cert for $wildDomain..."
+	echo
+done
