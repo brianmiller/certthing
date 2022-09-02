@@ -20,20 +20,36 @@ for wildDomain in $wildDomains; do
 	echo "Processing wildcard cert for $wildDomain..."
 	echo
 
+	
+	currentMd5=$(md5sum $certDir/live/$wildDomain/cert.pem |cut -d " " -f1)
+
 	/usr/bin/certbot certonly --dry-run --test-cert \
 	--max-log-backups 5 \
 	--manual --manual-auth-hook "/opt/stateful/scripts/dnsauth" --preferred-challenge dns-01 \
 	--config-dir $certDir --work-dir $certDir --logs-dir $certDir \
 	--non-interactive --manual-public-ip-logging-ok --agree-tos -m brian@phospher.com \
 	-d "*.$wildDomain"
+	RESULT=$?
 	echo
 
+	newMd5=$(md5sum $certDir/live/$wildDomain/cert.pem |cut -d " " -f1)
 
 	if [ ! "$RESULT" = 0 ]; then
                 echo "[ ERROR: ] Certs could not be renewed for $wildDomain!"
-                # send external notification here
+		# send external notification (e.g., discord)
                 continue
         fi
-	
+
+	if [ ! "$currentMd5" = "$newMd5" ]; then
+		echo "[ NOTICE: ] Cert changed for $wildDomain! Triggerig app updates..."
+		# send external app trigger (e.g., nginx -s reload)
+		# send external notification (e.g., discord)
+		continue
+	else
+		echo "[ NOTICE: ] Cert not updated..."
+		continue
+	fi
+
+
 	echo
 done
