@@ -23,7 +23,7 @@ for wildDomain in $wildDomains; do
 	
 	currentMd5=$(md5sum $certDir/live/$wildDomain/cert.pem |cut -d " " -f1)
 
-	/usr/bin/certbot certonly --dry-run --test-cert \
+	/usr/bin/certbot certonly \
 	--max-log-backups 5 \
 	--manual --manual-auth-hook "/opt/stateful/scripts/dnsauth" --preferred-challenge dns-01 \
 	--config-dir $certDir --work-dir $certDir --logs-dir $certDir \
