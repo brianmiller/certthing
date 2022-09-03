@@ -1,8 +1,8 @@
 #!/bin/bash
-version=1.0
+version=1.1
 
 # space separated list of domains
-wildDomains=""
+wildDomains="phospher.com gorc.me briansmiller.com"
 certDir="/mnt/certs"
 
 
@@ -41,8 +41,14 @@ for wildDomain in $wildDomains; do
         fi
 
 	if [ ! "$currentMd5" = "$newMd5" ]; then
-		echo "[ NOTICE: ] Cert changed for $wildDomain! Triggerig app updates..."
+		echo "[ NOTICE: ] Cert changed for $wildDomain! Triggering app updates..."
+
 		# send external app trigger (e.g., nginx -s reload)
+		echo "[ NOTICE: ] Reloading ext-nginx1..."
+		ssh root@cerebrum.phospher.com -o StrictHostKeyChecking=no /usr/bin/docker exec -i ext-nginx1 "/bin/bash -c '/usr/sbin/nginx -s reload'"
+                echo "[ NOTICE: ] Reloading int-nginx1..."
+                ssh root@cerebrum.phospher.com -o StrictHostKeyChecking=no /usr/bin/docker exec -i int-nginx1 "/bin/bash -c '/usr/sbin/nginx -s reload'"
+
 		# send external notification (e.g., discord)
 		continue
 	else
